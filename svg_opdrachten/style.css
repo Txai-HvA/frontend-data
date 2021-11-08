@@ -1,0 +1,94 @@
+svg {
+    height: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+#person {
+    animation: person-animation;
+    animation-duration: 5s ;
+    animation-iteration-count: infinite;
+}
+
+@keyframes person-animation {
+    0% {
+        transform: translate(0em, 0em);
+      }
+      60% {
+        transform: translate(0em, -2em);
+      }
+      100% {
+        transform: translate(0em, 0em);
+      }
+}
+
+#shirt {
+    fill: #ffdb34;
+    stroke: black;
+    stroke-opacity: 10%;
+}
+
+#necklace {
+    animation: jewelry-animation;
+    animation-duration: 5s ;
+    animation-iteration-count: infinite;
+    stroke: black;
+    stroke-opacity: 10%;
+}
+
+#left_leg,#right_leg {
+    fill: #084194;
+    stroke: black;
+    stroke-opacity: 10%;
+}
+
+#face, #neck, #left_arm, #right_arm, #hands {
+    fill: #d2967a;
+    stroke: black;
+    stroke-opacity: 10%;
+}
+
+#hair, #eyebrows {
+    fill: #120807;
+    stroke: black;
+    stroke-opacity: 10%;
+}
+
+#bracelets {
+    animation: jewelry-animation;
+    animation-duration: 5s ;
+    animation-iteration-count: infinite;
+    stroke: black;
+    stroke-opacity: 10%;
+}
+
+#background {
+    fill: #009c37;
+}
+
+#triangles {
+    fill: #fee000;
+}
+
+#glow {
+    fill: #002277;
+}
+
+@keyframes jewelry-animation {
+    0% {
+        fill: #009c37;
+    }
+    50% {
+        fill: #00ff59;
+    }
+    100% {
+        fill: #009c37;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    svg {
+        margin: 0;
+        width: max-content;
+    }
+  }
