@@ -1,0 +1,19 @@
+body {
+  width: 800px;
+  margin: 25px auto;
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+rect {
+  fill: red;
+  fill-opacity: 1;
+}
+rect:hover {
+  fill-opacity: 0.6;
+}
+.axis {
+  font-size: smaller;
+}
+
+#grafiek {
+  width: 800px;
+}

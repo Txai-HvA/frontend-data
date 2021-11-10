@@ -1,0 +1,11 @@
+div {
+  text-align: center;
+}
+
+#d3-container {
+
+}
+
+.rectangle:hover {
+  opacity: 0.66;
+}
