@@ -9,8 +9,10 @@ body {
 header {
   width: 100%;
   height: 70px;
-  background-color: green;
+  background-color: #000;
   margin-top: -25px;
+  text-align: center;
+  color: #b90000;
 }
 
 main {
@@ -18,7 +20,22 @@ main {
 }
 
 #filters {
-  margin: 10px auto 0;
+  padding: 10px;
+  width: 100%;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  font-size: 16;
+  border-bottom: #ededed solid 1px;
+}
+
+#filters input {
+  border: none;
+  font-size: 16;
+}
+
+#filterAmountOfSongs {
+  width: 45px;
 }
 
 rect {
@@ -29,11 +46,43 @@ rect:hover {
 }
 .axis {
   font-size: smaller;
-
 }
 
 .nameText {
-  color: green;
+  color: #000;
   transform: translate(-20px,0);
   font-weight: bold;
+}
+
+.domain {
+  visibility: hidden;
+  display: none;
+}
+
+.tick line {
+  visibility: hidden;
+  display: none;
+}
+
+.tick text {
+  color: #000;
+  transform: translate(-10px,0);
+  font-weight: bold;
+}
+
+.x > .axis {
+  background-color: red;
+}
+
+.countLabel {
+  color: purple;
+  text-anchor: middle;
+  font-size: 20;
+  position: absolute;
+  z-index: 1;
+  width: 100px;
+  height: 100px;
+  transform: translate(10px,10px);
+  background: red;
+  visibility: visible;
 }

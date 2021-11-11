@@ -4,11 +4,9 @@ let filterPeriod = document.querySelector("#filterPeriod");
 let givenUserName = document.querySelector("#givenUserName");
 let filterSongName = document.querySelector("#filterSongName");//
 
-// let filterUser = document.querySelector("#filterUser");
 
 
-
-const margin = {top: 40, bottom: 20, left: 250, right: 20};
+const margin = {top: 0, bottom: 20, left: 350, right: 20};
 const width = 525 - margin.left - margin.right;
 const height = 800 - margin.top - margin.bottom;
 
@@ -26,7 +24,7 @@ let data;
 
 // Scales setup
 const xscale = d3.scaleLinear().range([0, width]);//playCount
-const yscale = d3.scaleBand().rangeRound([0, height]).paddingInner(0.1);//songName
+const yscale = d3.scaleBand().rangeRound([0, height]).paddingInner(0.3);//songName
 
 // Axis setup
 const xaxis = d3.axisTop().scale(xscale);
@@ -34,8 +32,6 @@ const g_xaxis = g.append('g').attr('class','x axis')
   .attr("style", "visibility:hidden");//Hidden cause I want the playCount to appear on the bars !!!
 const yaxis = d3.axisLeft().scale(yscale);
 const g_yaxis = g.append('g').attr('class','y axis');
-
-
 
 
 
@@ -63,13 +59,6 @@ function update(new_data) {
   g_xaxis.call(xaxis);
   g_yaxis.call(yaxis);
 
-
-  //WIP text meer naast links verplaatsen !!!
-  //Veranderd alleen aantal text elementen
-  const text = g.selectAll("text")
-    .data(new_data)
-      .attr("class", "nameText");
-
   // Render the chart with new data
 
   // DATA JOIN
@@ -92,19 +81,17 @@ function update(new_data) {
   let quantizeScale = d3.scaleQuantize()
     .domain([0, 50])
     //.domain(d3.extent(data))//Takes the length of the dataset
-    .range(['red', 'orange', 'yellow', 'green', "blue"]);
+      .range(['red', 'orange', 'yellow', 'green', "blue"]);
 
   rect
     .attr('height', yscale.bandwidth())
     .transition()
       .ease(d3.easeElastic)//Animation when the amount of shown songs gets changed
       .attr('y', (d) => yscale(`${d.artistName} - ${d.songName}`))
-
-
     .style('fill', function(d, index) {
       return quantizeScale(index);
     })
-    .transition()//Animation for the bars
+    .transition()//Animation when the bars appear
       .ease(d3.easeBack)
       .delay(function(d, i) {
         return i * 40;
@@ -121,6 +108,19 @@ function update(new_data) {
       .attr("width", yscale.bandwidth())
       .attr("height", yscale.bandwidth());
   //Bron http://bl.ocks.org/hwangmoretime/c2c7128c5226f9199f87
+
+
+
+  g.selectAll("text")
+  .data(new_data)
+  .enter().append(text)
+        .text(function(d) {
+          return d.playCount;
+        })
+          .attr("class", "countLabel")
+          .attr("x", 10)//
+          .attr("y", 0)
+  //http://jsfiddle.net/enigmarm/3HL4a/13/
 }
 
 
@@ -134,7 +134,7 @@ d3.select(filterAmountOfSongs).on("change", function() {
       const filtered_data = data.slice(0, newSize); 
       update(filtered_data);
   } else {
-      update(data); //Update the chart with all the data we have
+      update(data); //Update the chart with all the data
   }
 });
 
@@ -145,7 +145,7 @@ d3.select(filterAmountOfSongs).on("input", function() {
       const filtered_data = data.slice(0, newSize); 
       update(filtered_data);
   } else {
-      update(data); //Update the chart with all the data we have
+      update(data); //Update the chart with all the data
   }
 });
 
