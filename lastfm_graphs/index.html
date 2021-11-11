@@ -7,11 +7,19 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Student's First BarChart</h1>
-    <div>
-        <label>The top <input type="number" value="1" min="1" max="50" id="filterAmountOfSongs"> favorite tracks from <input type="text" id="filterUser"></label>
-    </div>
-    <div id="grafiek"></div>
+    <header></header>
+    <main>
+        <div id="filters">
+            <label>
+                The top 
+                <input type="number" value="50" min="1" max="50" id="filterAmountOfSongs"> 
+                favorite tracks from 
+                <label id="givenUserName">
+                </label> 
+                from the last 12 months
+            </label>
+        </div>
+    </main>
     <script src="https://unpkg.com/d3@7"></script>
     <script src="index.js"></script>
 </body>

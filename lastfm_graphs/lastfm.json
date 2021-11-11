@@ -98,8 +98,8 @@
         },
         {
             "genre": "K-Pop",
-            "artistName": "BTS, Halsey",
-            "songName": "Boy With Luv",
+            "artistName": "BTS",
+            "songName": "Boy With Luv (Feat. Halsey)",
             "image": [
                 {
                     "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
@@ -290,8 +290,8 @@
         },
         {
             "genre": "K-Pop",
-            "artistName": "Lady Gaga, BLACKPINK",
-            "songName": "Sour Candy",
+            "artistName": "Lady Gaga",
+            "songName": "Sour Candy (with BLACKPINK)",
             "image": [
                 {
                     "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
@@ -338,8 +338,8 @@
         },
         {
             "genre": "K-Pop",
-            "artistName": "BLACKPINK, Selena Gomez",
-            "songName": "Ice Cream",
+            "artistName": "BLACKPINK",
+            "songName": "Ice Cream (with Selena Gomez)",
             "image": [
                 {
                     "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png",
@@ -4032,8 +4032,8 @@
         },
         {
             "userName": "ChaibaFM",
-            "artistName": "LeeHi, Yoonmirae",
-            "songName": "Red Lipstick",
+            "artistName": "LeeHi",
+            "songName": "Red Lipstick (feat. Yoonmirae)",
             "playCount": "26",
             "image": [
                 {
@@ -4082,8 +4082,8 @@
         },
         {
             "userName": "ChaibaFM",
-            "artistName": "AKMU, IU",
-            "songName": "NAKKA",
+            "artistName": "AKMU",
+            "songName": "NAKKA (with IU)",
             "playCount": "23",
             "image": [
                 {
@@ -4257,8 +4257,8 @@
         },
         {
             "userName": "ChaibaFM",
-            "artistName": "IU, DEAN",
-            "songName": "Troll",
+            "artistName": "IU",
+            "songName": "Troll (Feat. DEAN)",
             "playCount": "19",
             "image": [
                 {
@@ -4307,8 +4307,8 @@
         },
         {
             "userName": "ChaibaFM",
-            "artistName": "Weeekly, erSchool",
-            "songName": "A",
+            "artistName": "Weeekly",
+            "songName": "After School",
             "playCount": "18",
             "image": [
                 {
@@ -4407,8 +4407,8 @@
         },
         {
             "userName": "ChaibaFM",
-            "artistName": "Bibi, Tiger JK",
-            "songName": "WHY Y",
+            "artistName": "Bibi",
+            "songName": "WHY Y (Feat. Tiger JK)",
             "playCount": "16",
             "image": [
                 {
