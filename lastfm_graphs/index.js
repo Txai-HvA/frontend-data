@@ -9,7 +9,7 @@ let filterSongName = document.querySelector("#filterSongName");//
 
 
 const margin = {top: 40, bottom: 20, left: 250, right: 20};
-const width = 800 - margin.left - margin.right;
+const width = 525 - margin.left - margin.right;
 const height = 800 - margin.top - margin.bottom;
 
 // Creates sources <svg> element
@@ -19,7 +19,7 @@ const svg = d3.select('body').append('svg')
 
 // Group used to enforce margin
 const g = svg.append('g')
-.attr('transform', `translate(${margin.left},${margin.top})`);
+  .attr('transform', `translate(${margin.left},${margin.top})`);
 
 // Global variable for all data
 let data;
@@ -30,9 +30,15 @@ const yscale = d3.scaleBand().rangeRound([0, height]).paddingInner(0.1);//songNa
 
 // Axis setup
 const xaxis = d3.axisTop().scale(xscale);
-const g_xaxis = g.append('g').attr('class','x axis');
+const g_xaxis = g.append('g').attr('class','x axis')
+  .attr("style", "visibility:hidden");//Hidden cause I want the playCount to appear on the bars !!!
 const yaxis = d3.axisLeft().scale(yscale);
 const g_yaxis = g.append('g').attr('class','y axis');
+
+
+
+
+
 
 //Reads json file
 d3.json('./lastfm.json').then((json) => {
@@ -48,73 +54,100 @@ d3.json('./lastfm.json').then((json) => {
 
 
 function update(new_data) {
+  
   //update the scales
   xscale.domain([0, d3.max(new_data, (d) => d.playCount)]);
-  yscale.domain(new_data.map((d) => `${d.artistName} - ${d.songName}`));//Mapping on artist and song name
+  yscale.domain(new_data.map((d) => `${d.artistName} - ${d.songName}`)); //Mapping on artist and song name
+
   //render the axis
   g_xaxis.call(xaxis);
   g_yaxis.call(yaxis);
+
+
+  //WIP text meer naast links verplaatsen !!!
+  //Veranderd alleen aantal text elementen
+  const text = g.selectAll("text")
+    .data(new_data)
+      .attr("class", "nameText");
 
   // Render the chart with new data
 
   // DATA JOIN
   const rect = g.selectAll('rect').data(new_data).join(
     // ENTER 
-    // new elements
+    // new DOM elements
     (enter) => {
       const rect_enter = enter.append('rect').attr('x', 0);
       return rect_enter;
     },
     // UPDATE
-    // update existing elements
+    // update existing DOM elements
     (update) => update,
     // EXIT
-    // elements that aren't associated with data
+    // removes DOM elements that aren't associated with data
     (exit) => exit.remove()
   );
 
   //quantizeScale, where bars have different colors depending on playCount
   let quantizeScale = d3.scaleQuantize()
-  .domain([0, 50])
-  //.domain(d3.extent(data))//Takes the length of the dataset
-  .range(['red', 'orange', 'yellow', 'green', "blue"]);
+    .domain([0, 50])
+    //.domain(d3.extent(data))//Takes the length of the dataset
+    .range(['red', 'orange', 'yellow', 'green', "blue"]);
 
-  rect.transition()
+  rect
     .attr('height', yscale.bandwidth())
-    .attr('width', (d) => xscale(d.playCount))
-    .attr('y', (d) => yscale(`${d.artistName} - ${d.songName}`))
+    .transition()
+      .ease(d3.easeElastic)//Animation when the amount of shown songs gets changed
+      .attr('y', (d) => yscale(`${d.artistName} - ${d.songName}`))
+
+
     .style('fill', function(d, index) {
       return quantizeScale(index);
-    });
+    })
+    .transition()//Animation for the bars
+      .ease(d3.easeBack)
+      .delay(function(d, i) {
+        return i * 40;
+      })
+      .attr('width', (d) => xscale(d.playCount));
 
-
-
-
-
-    // WIP add rect with image fill next to the rect above
-
-    // rect.append("svg:image")
-    //   .attr('x', 0)
-    //   .attr('y', 0)
-    //   .attr('width', "100px")
-    //   .attr('height', "100px")
-    //   .attr("xlink:href", "https://icon-library.com/images/twitter-small-icon/twitter-small-icon-17.jpg")
+  // WIP add image next to the rect above
+  const image = g.selectAll("image")
+    .data(new_data)
+    .enter().append("svg:image")
+      .attr("xlink:href", (d) => d.image["#text"])//gets image url
+      .attr("x", -13)
+      .attr("y", (d) => yscale(`${d.artistName} - ${d.songName}`))
+      .attr("width", yscale.bandwidth())
+      .attr("height", yscale.bandwidth());
+  //Bron http://bl.ocks.org/hwangmoretime/c2c7128c5226f9199f87
 }
+
+
 
 //INTERACTIVITY
 
-//Shows a specific amount of records
 d3.select(filterAmountOfSongs).on("change", function() {
-    const newSize = d3.select(this).property("value");  
+  const newSize = d3.select(this).property("value");  
     
-    if(newSize > 1 && newSize <= 50) {
-        const filtered_data = data.slice(0, newSize); 
-        update(filtered_data);
-    } else {
-        update(data); //Update the chart with all the data we have
-    }
+  if(newSize > 1 && newSize <= 50) {
+      const filtered_data = data.slice(0, newSize); 
+      update(filtered_data);
+  } else {
+      update(data); //Update the chart with all the data we have
+  }
 });
 
+d3.select(filterAmountOfSongs).on("input", function() {
+  const newSize = d3.select(this).property("value");  
+    
+  if(newSize > 1 && newSize <= 50) {
+      const filtered_data = data.slice(0, newSize); 
+      update(filtered_data);
+  } else {
+      update(data); //Update the chart with all the data we have
+  }
+});
 
 
 

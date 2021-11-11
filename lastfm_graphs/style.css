@@ -29,4 +29,11 @@ rect:hover {
 }
 .axis {
   font-size: smaller;
+
+}
+
+.nameText {
+  color: green;
+  transform: translate(-20px,0);
+  font-weight: bold;
 }
