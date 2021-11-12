@@ -66,23 +66,13 @@ rect:hover {
 
 .tick text {
   color: #000;
-  transform: translate(-10px,0);
+  transform: translate(-40px,0);
   font-weight: bold;
 }
 
-.x > .axis {
-  background-color: red;
-}
-
-.countLabel {
-  color: purple;
-  text-anchor: middle;
-  font-size: 20;
-  position: absolute;
-  z-index: 1;
-  width: 100px;
-  height: 100px;
-  transform: translate(10px,10px);
-  background: red;
-  visibility: visible;
+.playCountLabel {
+  opacity: 0;
+  font-size: smaller;
+  font-weight: bold;
+  fill: #fff;
 }
