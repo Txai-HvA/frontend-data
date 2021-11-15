@@ -38,6 +38,7 @@ main {
   width: 45px;
 }
 
+/* Bars */
 rect {
   fill-opacity: 1;
 }
@@ -48,31 +49,29 @@ rect:hover {
   font-size: smaller;
 }
 
-.nameText {
-  color: #000;
-  transform: translate(-20px,0);
-  font-weight: bold;
-}
-
-.domain {
+/* x-axis and y-axis line */
+.domain, .tick line {
   visibility: hidden;
   display: none;
 }
 
-.tick line {
-  visibility: hidden;
-  display: none;
-}
-
+/* Ranking+Artist+Song */
 .tick text {
-  color: #000;
+  color: #cdf564;
   transform: translate(-40px,0);
   font-weight: bold;
 }
 
+/* Play Count Label */
 .playCountLabel {
   opacity: 0;
   font-size: smaller;
   font-weight: bold;
-  fill: #fff;
+  fill: #cb1582;
+}
+
+.userSongBarChart {
+  background-color: #4100f5;
+  margin: 0 auto;
+  padding: 10px;
 }
