@@ -1625,17 +1625,6 @@
         },
         {
             "userName": "ChaibaFM",
-            "artistName": "Weeekly",
-            "songName": "After School",
-            "playCount": "18",
-            "image": {
-                "size": "small",
-                "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png"
-            },
-            "url": "https://www.last.fm/music/Weeekly/_/After+School"
-        },
-        {
-            "userName": "ChaibaFM",
             "artistName": "Yukika",
             "songName": "Secret",
             "playCount": "18",
@@ -1688,28 +1677,6 @@
                 "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png"
             },
             "url": "https://www.last.fm/music/BewhY/_/Celebration"
-        },
-        {
-            "userName": "ChaibaFM",
-            "artistName": "fromis_9",
-            "songName": "WE GO",
-            "playCount": "15",
-            "image": {
-                "size": "small",
-                "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png"
-            },
-            "url": "https://www.last.fm/music/fromis_9/_/WE+GO"
-        },
-        {
-            "userName": "ChaibaFM",
-            "artistName": "Joy",
-            "songName": "Hello",
-            "playCount": "15",
-            "image": {
-                "size": "small",
-                "#text": "https://lastfm.freetls.fastly.net/i/u/34s/2a96cbd8b46e442fc41c2b86b821562f.png"
-            },
-            "url": "https://www.last.fm/music/Joy/_/Hello"
         },
         {
             "userName": "ChaibaFM",
