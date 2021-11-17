@@ -29,8 +29,6 @@ const g_xaxis = g.append("g").attr("class","x axis")
 const yaxis = d3.axisLeft().scale(yscale);
 const g_yaxis = g.append("g").attr("class","y axis");
 
-
-
 //Global variable for all data
 let data;
 
@@ -40,17 +38,28 @@ d3.json("./lastfm.json").then((json) => {
     data = json[4];
 
     givenUserName.textContent = data[0].userName;
-    //Sorts dataset from highest playCount to lowest playCount (so decending)
-    data = data.sort(function(a, b) { return b.playCount - a.playCount });
-    
-    //Cuts of the the rows above 20
-    data = data.slice(0, 20); 
 
-    updateUserSongChart(data);
+    data = sortJSON(data);
+    data = filterTop20(data);
+    
+    updateBarChart(data);
 });
 
+//Sorts data
+function sortJSON(data) {
+  //Sorts dataset from highest playCount to lowest playCount (so decending)
+  data = data.sort(function(a, b) { return b.playCount - a.playCount });
+  return data;
+}
+
+//Cuts of the the rows above 20
+function filterTop20(data) {
+  data = data.slice(0, 20); 
+  return data;
+}
+
 //Updates user song chart with given data
-function updateUserSongChart(new_data) {
+function updateBarChart(new_data) {
   
   //update the scales
   xscale.domain([0, d3.max(new_data, (d) => d.playCount)]);
@@ -124,9 +133,15 @@ function createRect(g, new_data, rectX) {
     .transition()//Animation when the bars appear
       .ease(d3.easeBack)
       .delay(function(d, i) {
+        console.log(i)
         return i * 40;
       })
       .attr("width", (d) => xscale(d.playCount) / 2);//width of the bars
+
+  //Links to the LastFM page of the song
+  rect.on("click", (i, d) => window.open(d.url));
+  //Source https://stackoverflow.com/questions/32305898/link-in-d3-bar-chart
+  //https://stackoverflow.com/questions/7077770/window-location-href-and-window-open-methods-in-javascript
 }
 
 //Creates the images next to the barchart
@@ -153,7 +168,10 @@ function createImages(g, new_data) {
       .attr("y", (d, i) => yscale(`${d.artistName} - ${d.songName} - #${i+1}`))
       .attr("width", yscale.bandwidth())
       .attr("height", yscale.bandwidth());
-  //Bron http://bl.ocks.org/hwangmoretime/c2c7128c5226f9199f87
+  //Source http://bl.ocks.org/hwangmoretime/c2c7128c5226f9199f87
+
+  //Links to the LastFM page of the song
+  images.on("click", (i, d) => window.open(d.url));
 }
 
 //Creates the labels on top of the bars that display the amount of listens per song
@@ -201,8 +219,8 @@ d3.select(filterAmountOfSongs).on("input", function() {
     
   if(newSize => 5 && newSize <= 20) {
       const filtered_data = data.slice(0, newSize);//Cuts off the rows that are below newSize 
-      updateUserSongChart(filtered_data); //Update the chart with all the filtered data
+      updateBarChart(filtered_data); //Update the chart with all the filtered data
   } else {
-      updateUserSongChart(data); //Update the chart with all the data
+      updateBarChart(data); //Update the chart with all the data
   }
 });

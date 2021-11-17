@@ -75,3 +75,7 @@ rect:hover {
   margin: 0 auto;
   padding: 10px;
 }
+
+.userSongBarChart g image:hover {
+  opacity: 0.6;
+}
