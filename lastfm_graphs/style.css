@@ -8,45 +8,57 @@ body {
 
 header {
   width: 100%;
-  height: 70px;
-  background-color: #000;
+  height: 80px;
+  background-color: #cb1582;
   margin-top: -25px;
   text-align: center;
-  color: #b90000;
+  color: #a5ffef;
 }
 
-main {
+#givenUserName {
+  color: #191414;
+}
+
+#graphs {
   display: flex;
-}
-
-#filters {
-  padding: 10px;
+  background-color: grey;
   width: 100%;
-  background-color: #fff;
-  display: flex;
-  justify-content: center;
-  font-size: 16;
-  border-bottom: #ededed solid 1px;
 }
 
-#filters input {
+#graphs input, #graphs select {
   border: none;
   font-size: 16;
+  margin: -3px 5px 0;
+  padding: 2px;
+  color: #4100f5;
+  background-color: #cdf564;
 }
 
-#filterAmountOfSongs {
+input {
   width: 45px;
 }
 
-/* Bars */
-rect {
-  fill-opacity: 1;
+/* Barchart Container */
+#userSongContainer {
+  padding: 20px;
+  background-color: #4100f5;
+  width: 55%;
 }
-rect:hover {
-  fill-opacity: 0.6;
+
+#userSongContainer label {
+  justify-content: center;
+  display: flex;
+  font-weight: bold;
+  color: #cdf564;
 }
-.axis {
-  font-size: smaller;
+
+/* Barchart */
+.userSongBarChart {
+  padding-top: 20px;
+}
+
+.userSongBarChart g image:hover {
+  opacity: 0.6;
 }
 
 /* x-axis and y-axis line */
@@ -55,11 +67,20 @@ rect:hover {
   display: none;
 }
 
-/* Ranking+Artist+Song */
-.tick text {
+/* Barchart text */
+.axis {
+  font-size: smaller;
   color: #cdf564;
   transform: translate(-40px,0);
   font-weight: bold;
+}
+
+/* bars */
+rect {
+  fill-opacity: 1;
+}
+rect:hover {
+  fill-opacity: 0.6;
 }
 
 /* Play Count Label */
@@ -70,12 +91,66 @@ rect:hover {
   fill: #cb1582;
 }
 
-.userSongBarChart {
-  background-color: #4100f5;
-  margin: 0 auto;
-  padding: 10px;
+/* Piechart Container */
+#userArtistContainer {
+  background-color: #a5ffef;
+  width: 45%;
+  display: flex;
+  flex-direction: column;
 }
 
-.userSongBarChart g image:hover {
-  opacity: 0.6;
+#userArtistContainer label {
+  margin: 20px auto 20px;
+  font-weight: bold;
+  color: #cb1582;
 }
+
+/* Piechart */
+.userArtistPieChart {
+  align-self: right;
+  margin: 0 auto;
+  text-anchor: middle;
+}
+
+.userArtistPieChart text {
+  font-weight: bold;
+}
+
+/* Piechart legend */
+#userArtistLegend {
+  border: #cb1582 3px solid;
+  background-color: #cb158260;
+  padding-left: 20px;
+  padding: 20px 20px 20px 40px;
+  width: 200px;
+  align-self: center;
+  color: #a5ffef;
+}
+
+#userArtistLegend li {
+  font-weight: bold;
+}
+
+li::before {
+  display: inline-block;
+  content: "🎵";
+  width: 2em;
+  color: transparent;  
+}
+
+#userArtistLegend li:nth-of-type(1)::before {
+  text-shadow: 0 0 0 #cdf564;
+}
+#userArtistLegend li:nth-of-type(2)::before {
+  text-shadow: 0 0 0 #4100f5;
+}
+#userArtistLegend li:nth-of-type(3)::before {
+  text-shadow: 0 0 0 #cb1582;
+}
+#userArtistLegend li:nth-of-type(4)::before {
+  text-shadow: 0 0 0 #191414;
+}
+#userArtistLegend li:nth-of-type(5)::before {
+  text-shadow: 0 0 0 #ffffff;
+}
+

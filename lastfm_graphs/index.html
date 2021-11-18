@@ -4,22 +4,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <title>Document</title>
 </head>
 <body>
     <header>
-        <h1>LastFM Data Visualisations</h1>
+        <h1>LastFM Data from <label id="givenUserName"></label></h1>
     </header>
     <main>
-        <div id="filters">
-            <label>
-                The top 
-                <input type="number" placeholder="20" value="20" min="5" max="20" id="filterAmountOfSongs"> 
-                favorite tracks from 
-                <label id="givenUserName">
-                </label> 
-                from the last 12 months
-            </label>
+        <div id="graphs">
+            <div id="userSongContainer">
+                <label>
+                    The top 
+                    <input type="number" placeholder="20" value="20" min="5" max="20" id="filterAmountOfSongs"> 
+                    tracks from the last 12 months, sorted by
+                    <select name="filterSort" id="filterSort">
+                        <option value="HighLowPlayCount">High - Low Plays</option>
+                        <option value="LowHighPlayCount">Low - High Plays</option>
+                    </select>
+                </label>
+                <div class="userSongBarChart"></div>
+            </div>
+            <div id="userArtistContainer">
+                <label>
+                    The top 5 artists from the last 12 months
+                    <label class="givenUserName"></label> 
+                </label>
+                <div class="userArtistPieChart"></div>
+                <ol id="userArtistLegend">
+                </ol>
+            </div>
         </div>
     </main>
     <script src="https://unpkg.com/d3@7"></script>

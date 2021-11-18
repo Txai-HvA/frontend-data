@@ -2,71 +2,80 @@
 let filterAmountOfSongs = document.querySelector("#filterAmountOfSongs");
 let filterPeriod = document.querySelector("#filterPeriod");
 let givenUserName = document.querySelector("#givenUserName");
+let filterSort = document.querySelector("#filterSort");
+let userArtistLegend = document.querySelector("#userArtistLegend");
 
-//margin, width & height off the svg
-const margin = {top: 0, bottom: 0, left: 320, right: 0};
-const width = 800 - margin.left - margin.right;
-const height = 800 - margin.top - margin.bottom;
+//marginLeft, width & height off the svg
+const marginLeft = 320;
+const width = 800;
+const height = 800;
 
 //Creates sources <svg> element
-const userSongBarChartSVG = d3.select("body").append("svg")
-.attr("width", width+margin.left+margin.right)
-.attr("height", height+margin.top+margin.bottom)
-.attr("class", "userSongBarChart");
+const userSongPieChartSVG = d3.select(".userSongBarChart").append("svg")
+.attr("width", width)
+.attr("height", height)
 
-//Group is used to enforce given margin
-const g = userSongBarChartSVG.append("g")
-  .attr("transform", `translate(${margin.left},${margin.top})`);
+//Group is used to enforce given marginLeft
+const g = userSongPieChartSVG.append("g")
+  .attr("transform", `translate(${marginLeft},${0})`);
 
 //Scales setup
 const xscale = d3.scaleLinear().range([0, width]);//playCount
 const yscale = d3.scaleBand().rangeRound([0, height]).paddingInner(0.2);//songName
 
 //Axis setup
-const xaxis = d3.axisTop().scale(xscale);
-const g_xaxis = g.append("g").attr("class","x axis")
-  .attr("style", "visibility:hidden");//Hidden cause I want the playCount to appear on the bars !!!
 const yaxis = d3.axisLeft().scale(yscale);
 const g_yaxis = g.append("g").attr("class","y axis");
 
-//Global variable for all data
-let data;
+let dataSongs, dataArtists;
 
 //Reads json file
 d3.json("./lastfm.json").then((json) => {
-    //Gets the last array (favorite songs from user)
-    data = json[4];
+    //Gets favorite songs from user
+    dataSongs = json[4];
 
-    givenUserName.textContent = data[0].userName;
+    dataSongs = sortFromHighToLow(dataSongs);
+    dataSongs = filterTop(dataSongs, 20);
+    updateBarChart(dataSongs);
 
-    data = sortJSON(data);
-    data = filterTop20(data);
-    
-    updateBarChart(data);
+    //Displays username of the user
+    givenUserName.textContent = dataSongs[0].userName;
+
+
+    //Gets favorite artists from user
+    dataArtists = json[3];
+
+    dataArtists = sortFromHighToLow(dataArtists);
+    dataArtists = filterTop(dataArtists, 5);
+    updatePieChart(dataArtists)
 });
 
-//Sorts data
-function sortJSON(data) {
-  //Sorts dataset from highest playCount to lowest playCount (so decending)
+//Sorts dataset from highest playCount to lowest playCount (so decending)
+function sortFromHighToLow(data) {
   data = data.sort(function(a, b) { return b.playCount - a.playCount });
   return data;
 }
 
-//Cuts of the the rows above 20
-function filterTop20(data) {
-  data = data.slice(0, 20); 
+//Sorts dataset from lowest playCount to highest playCount (so accending)
+function sortFromLowToHigh(data) {
+  data = data.sort(function(a, b) { return a.playCount - b.playCount });
   return data;
 }
 
-//Updates user song chart with given data
+//Cuts of the the rows above 20
+function filterTop(data, amount) {
+  data = data.slice(0, amount); 
+  return data;
+}
+
+//Updates user song bar chart with given data
 function updateBarChart(new_data) {
   
   //update the scales
   xscale.domain([0, d3.max(new_data, (d) => d.playCount)]);
   yscale.domain(new_data.map((d, i) => `${d.artistName} - ${d.songName} - #${i+1}`)); //Mapping on artist and song name
   
-  //render the axis
-  g_xaxis.call(xaxis);
+  //Render the y axis
   g_yaxis.call(yaxis);
 
   //Fix for positioning
@@ -88,12 +97,12 @@ function updateBarChart(new_data) {
     case 18: rectX = -3.5; labelY = 13; labelX = 290; break;
     case 19: rectX = -4;   labelY = 13; labelX = 290; break;
     case 20: rectX = -6.5; labelY = 12; labelX = 290; break;
-}
+  }
 
   //Render the chart with new data
   createRect(g, new_data, rectX);
   createImages(g, new_data);
-  createLabels(userSongBarChartSVG, new_data, labelY, labelX);
+  createLabels(userSongPieChartSVG, new_data, labelY, labelX);
 }
 
 //Creates the bars for the barchart
@@ -133,7 +142,6 @@ function createRect(g, new_data, rectX) {
     .transition()//Animation when the bars appear
       .ease(d3.easeBack)
       .delay(function(d, i) {
-        console.log(i)
         return i * 40;
       })
       .attr("width", (d) => xscale(d.playCount) / 2);//width of the bars
@@ -175,9 +183,9 @@ function createImages(g, new_data) {
 }
 
 //Creates the labels on top of the bars that display the amount of listens per song
-function createLabels(userSongBarChartSVG, new_data, labelY, labelX) {
+function createLabels(userSongPieChartSVG, new_data, labelY, labelX) {
     //DATA JOIN
-    const labels = userSongBarChartSVG.selectAll(".playCountLabel").data(new_data).join(
+    const labels = userSongPieChartSVG.selectAll(".playCountLabel").data(new_data).join(
       //ENTER 
       //new DOM elements
       (enter) => {
@@ -204,23 +212,101 @@ function createLabels(userSongBarChartSVG, new_data, labelY, labelX) {
           .attr("x", (d) => xscale(d.playCount) / 2 + labelX)
           .attr("y", (d, i) => yscale(`${d.artistName} - ${d.songName} - #${i+1}`)  + labelY)
           .attr("dy", ".75em")
-          .transition().delay(function(d, i) {//Animation where the labels fade in one by one
-            return i * 50;
-          })
+          .transition().delay((d, i) =>  i * 50)//Animation where the labels fade in one by one
             .style("opacity", 1)
             .text((d) => d.playCount);
 }
-
-//INTERACTION
 
 //Changes the amount of top songs displayed
 d3.select(filterAmountOfSongs).on("input", function() {
   const newSize = d3.select(this).property("value");  
     
   if(newSize => 5 && newSize <= 20) {
-      const filtered_data = data.slice(0, newSize);//Cuts off the rows that are below newSize 
+      const filtered_data = dataSongs.slice(0, newSize);//Cuts off the rows that are below newSize 
       updateBarChart(filtered_data); //Update the chart with all the filtered data
   } else {
-      updateBarChart(data); //Update the chart with all the data
+      updateBarChart(dataSongs); //Update the chart with all the data
   }
 });
+
+//Changes the sorting from high-low playcount to low-high playcount and vice versa
+d3.select(filterSort).on("change", function() {
+  const selectedOption = d3.select(this).property("value");  
+  if(selectedOption == "HighLowPlayCount") {
+    dataSongs = sortFromHighToLow(dataSongs);
+  } else if(selectedOption == "LowHighPlayCount") {
+    dataSongs = sortFromLowToHigh(dataSongs);
+  }
+  updateBarChart(dataSongs);
+});
+
+//Updates user artist pie chart with given data
+function updatePieChart(new_data) {
+  let pieWidth = 500;
+  let pieHeight = 500;
+  //The radius of the pieplot is half the width or half the height (smallest one)
+  let radius = Math.min(pieWidth, pieHeight) / 2;
+
+  let userSongPieChartSVG = d3
+  .select(".userArtistPieChart")
+  .append("svg")
+    .attr("width", pieWidth)
+    .attr("height", pieHeight)
+    .append("g")
+      .attr("transform", `translate(${pieWidth / 2}, ${pieHeight / 2})`);
+
+  //ordinalScalePie, where each slice has a different color depending on playCount
+  let ordinalScalePie = d3.scaleOrdinal()
+    .domain(new_data)
+      .range(["#cdf564", "#4100f5", "#cb1582", "#191414", "#ffffff"]);
+
+  //ordinalScaleText, where text has different colors depending on playCount
+  let ordinalScaleText = d3.scaleOrdinal()
+    .domain(new_data)
+      .range(["#4100f5", "#cdf564", "#a5ffef", "#ffffff", "#191414"]);
+
+  let pie = d3.pie().value((d) => d.value);
+  let result = new_data.map((d) => d.playCount);
+  let data_ready = pie(d3.entries(result));
+  //Creates the circle
+  //where .innerRadius() is the hole in the middle
+  //and where .outerRadius() is the actual radius of the circle
+  let arcGenerator = d3.arc().innerRadius(90).outerRadius(radius);
+
+  //Slices
+  userSongPieChartSVG
+    .selectAll("slices")
+    .data(data_ready)
+    .enter()
+      .append("path").style("opacity", "0")
+        .transition()
+          .delay((d, i) => i * 500)
+        .attr("d", arcGenerator)
+        .attr("fill", (d) => ordinalScalePie(d.value))
+        .style("opacity", "1");
+
+
+  //Slices Text
+  userSongPieChartSVG
+    .selectAll("slices")
+    .data(data_ready)
+    .enter()
+      .append("text")
+        .transition()
+          .delay((d, i) => i * 500)
+      .text((d) => d.value)
+      .attr("transform", (d) => `translate( ${arcGenerator.centroid(d)})`)//used to compute the midpoint of the centerline of the arc
+      .attr("fill", (d) => ordinalScaleText(d.value));
+
+  createLegend(new_data);
+}
+
+//Creates a legend for the user artist pie chart
+function createLegend(new_data) {
+  //Add list items to userArtistLegend
+  new_data.forEach(artist => {
+    let li = document.createElement("li");
+    li.appendChild(document.createTextNode(artist.artistName));
+    userArtistLegend.appendChild(li);
+  });
+}
